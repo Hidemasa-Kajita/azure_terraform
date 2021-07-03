@@ -15,6 +15,10 @@ destroy:
 	@$(call _checkEnv)
 	./${env}/terraform.sh destroy ${env}
 
+fmt:
+	@$(call _checkEnv)
+	./${env}/terraform.sh fmt ${env}
+
 # dev, stg, prod 以外もエラーにしたい
 define _checkEnv
 	if [ -z ${env} ]; then\

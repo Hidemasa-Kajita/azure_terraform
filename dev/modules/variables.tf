@@ -1,0 +1,10 @@
+variable "env" {}
+variable "service_name" {}
+variable "location" {}
+variable "disk_size" {}
+variable "admin_user" {}
+variable "disk_type" {}
+variable "vm_publisher" {}
+variable "vm_offer" {}
+variable "vm_sku" {}
+variable "vm_version" {}
