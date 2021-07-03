@@ -4,6 +4,11 @@
 環境変数`${env}`は`dev`, `stg`, `prod`の中から選択可能です。
 ※ 現状devのみ使用可能
 
+- 変数定義ファイルを作成
+```
+make tfvars env=${env}
+```
+
 - 使用するディレクトリの準備
 ```
 make init env=${env}

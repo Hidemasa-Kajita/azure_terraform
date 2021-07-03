@@ -1,4 +1,8 @@
 
+tfvars:
+	@$(call _checkEnv)
+	cp ./${env}/terraform.tfvars.example ./${env}/terraform.tfvars
+
 init:
 	@$(call _checkEnv)
 	./${env}/terraform.sh init ${env}
