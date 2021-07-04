@@ -3,6 +3,7 @@ resource "azurerm_lb" "lb" {
   name                = "${var.service_name}-lb"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
+  sku = "Standard"
 
   frontend_ip_configuration {
     name                 = "LoadBalancerFrontEnd"
@@ -17,6 +18,7 @@ resource "azurerm_lb_backend_address_pool" "backend_pool" {
 }
 
 # NATインバウンドルール
+## VMが追加されていない（踏み台使おうと思うのでとりあえず良い）。どこかで消す。
 resource "azurerm_lb_nat_rule" "lb_nat_rule" {
   resource_group_name            = azurerm_resource_group.rg.name
   loadbalancer_id                = azurerm_lb.lb.id
@@ -50,4 +52,12 @@ resource "azurerm_lb_probe" "lb_probe" {
   protocol = "Tcp"
   port                = 80
   interval_in_seconds = 5
+}
+
+# バックエンドプールに含まれるipアドレス（VM）
+resource "azurerm_lb_backend_address_pool_address" "lb-backend-private-address" {
+  name                    = "example"
+  backend_address_pool_id = azurerm_lb_backend_address_pool.backend_pool.id
+  virtual_network_id      = azurerm_virtual_network.vnet.id
+  ip_address              = azurerm_linux_virtual_machine.vm.private_ip_address
 }
