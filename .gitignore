@@ -1,4 +1,4 @@
-*.ssh*
+*ssh_key*
 
 .terraform*
 
