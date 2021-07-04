@@ -1,11 +1,12 @@
 resource "azurerm_linux_virtual_machine" "vm" {
-  name                            = "${var.service_name}-${var.service_name}-vm"
+  name                            = "${var.service_name}-${var.env}-vm"
   location                        = azurerm_resource_group.rg.location
   resource_group_name             = azurerm_resource_group.rg.name
   network_interface_ids           = [azurerm_network_interface.nic.id]
   size                            = var.disk_size
   computer_name                   = "${var.service_name}${var.service_name}-vm"
   admin_username                  = var.admin_user
+  zone = 1
 
   os_disk {
     caching              = "ReadWrite"
@@ -24,25 +25,25 @@ resource "azurerm_linux_virtual_machine" "vm" {
     public_key     = azurerm_ssh_public_key.ssh-key.public_key
   }
 
-  connection {
-    host = azurerm_public_ip.pip.ip_address
-    user = var.admin_user
-    type = "ssh"
-    private_key = file("./.ssh/ssh_key.pem")
-    agent = true
-  }
+  # connection {
+  #   host = azurerm_public_ip.pip.ip_address
+  #   user = var.admin_user
+  #   type = "ssh"
+  #   private_key = file("./.ssh/ssh_key.pem")
+  #   agent = true
+  # }
 
-  provisioner "file" {
-    source = "../deploy.sh"
-    destination = "/home/azureuser/deploy.sh"
-  }
+  # provisioner "file" {
+  #   source = "../deploy.sh"
+  #   destination = "/home/azureuser/deploy.sh"
+  # }
 
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /home/azureuser/deploy.sh",
-      "/home/azureuser/deploy.sh"
-    ]
-  }
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "chmod +x /home/azureuser/deploy.sh",
+  #     "/home/azureuser/deploy.sh"
+  #   ]
+  # }
 
   tags = {
     environment = var.env
